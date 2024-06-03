@@ -61,7 +61,7 @@ def compute_ma(
         maxlabel = str(maxspan) + "d"
         signals = m_a.copy(deep=True)
         signals["diff"] = 0.0
-        signals["diff"][minspan:] = np.where(
+        signals.loc[signals.index[minspan:],"diff"] = np.where(
             m_a[minlabel][minspan:] > m_a[maxlabel][minspan:], 1.0, 0.0
         )
         # Generate trading orders

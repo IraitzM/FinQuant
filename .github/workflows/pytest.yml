@@ -1,8 +1,5 @@
 name: Python CI
 
-env:
-  QUANDLAPIKEY: ${{ secrets.QUANDLAPIKEY }}
-
 on:
   push:
     branches:

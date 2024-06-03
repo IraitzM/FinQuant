@@ -60,9 +60,7 @@ Make your changes to the code, and write sensible commit messages.
 In the root directory of your version of FinQuant, run `make test` and make sure all tests are passing.
 If applicable, add new tests in the `./tests/` directory. Tests should be written with `pytest`.
 
-Some few tests require you to have a [Quandl API key](https://docs.quandl.com/docs#section-authentication).
-If you do not have one locally, you can ignore the tests that are failing due to a missing Quandl API key.
-Once you open a PR, all tests are run by GitHub Actions with a pre-configured key.
+Current version only uses Yahoo Finance to download information (`yfinance` package)
 
 ### Documentation
 If applicable, please add docstrings to new functions/classes/modules.

@@ -9,7 +9,6 @@ import pathlib
 import numpy as np
 import pandas as pd
 import pytest
-import quandl
 import yfinance
 
 from finquant.portfolio import build_portfolio
@@ -19,17 +18,13 @@ from finquant.stock import Stock
 strong_abse = 1e-15
 weak_abse = 1e-8
 
-# setting quandl api key
-quandl.ApiConfig.api_key = os.getenv("QUANDLAPIKEY")
-
 # read data from file
-df_pf_path = pathlib.Path.cwd() / ".." / "data" / "ex1-portfolio.csv"
-df_data_path = pathlib.Path.cwd() / ".." / "data" / "ex1-stockdata.csv"
+df_pf_path = pathlib.Path.cwd() / "data" / "ex1-portfolio.csv"
+df_data_path = pathlib.Path.cwd() / "data" / "ex1-stockdata.csv"
 df_pf = pd.read_csv(df_pf_path)
 df_data = pd.read_csv(df_data_path, index_col="Date", parse_dates=True)
 # create testing variables
 names = df_pf.Name.values.tolist()
-names_yf = [name.replace("WIKI/", "") for name in names]
 weights_df_pf = [
     0.31746031746031744,
     0.15873015873015872,
@@ -38,7 +33,6 @@ weights_df_pf = [
 ]
 weights_no_df_pf = [1.0 / len(names) for i in range(len(names))]
 df_pf2 = pd.DataFrame({"Allocation": weights_no_df_pf, "Name": names})
-df_pf2_yf = pd.DataFrame({"Allocation": weights_no_df_pf, "Name": names_yf})
 start_date = datetime.datetime(2015, 1, 1)
 end_date = "2017-12-31"
 
@@ -48,7 +42,7 @@ d_pass = [
         "names": names,
         "start_date": start_date,
         "end_date": end_date,
-        "data_api": "quandl",
+        "data_api": "yfinance",
     }
 ]
 

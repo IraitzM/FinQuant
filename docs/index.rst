@@ -39,7 +39,6 @@ Dependencies
 - ``scipy>=1.2.0``
 - ``pandas>=2.0``
 - ``matplotlib>=3.0``
-- ``quandl>=3.4.5``
 - ``yfinance>=0.1.43``
 
 From PyPI

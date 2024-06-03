@@ -166,7 +166,6 @@ As it is common for open-source projects, there are several ways to get hold of 
  - numpy>=1.15
  - pandas>=2.0
  - matplotlib>=3.0
- - quandl>=3.4.5
  - yfinance>=0.1.43
  - scipy>=1.2.0
  - scikit-learn>=1.3.0
@@ -241,7 +240,7 @@ look at the examples provided in `./example`.
 **Note**: In the below examples, `pf` refers to an instance of `finquant.portfolio.Portfolio`, the object that holds all stock prices and computes its most common quantities automatically. To make *FinQuant* a user-friendly program, that combines data analysis, visualisation and optimisation, the object also provides interfaces to the main features that are provided in the modules in `./finquant/` and are discussed throughout this README.
 
 ### Building a portfolio with data from web
-`./example/Example-Build-Portfolio-from-web.py`: Shows how to use *FinQuant* to build a financial portfolio by downloading stock price data through the Python package `quandl`/`yfinance`.
+`./example/Example-Build-Portfolio-from-web.py`: Shows how to use *FinQuant* to build a financial portfolio by downloading stock price data through the Python package `yfinance`.
 
 ### Building a portfolio with preset data
 `./example/Example-Build-Portfolio-from-file.py`: Shows how to use *FinQuant* to build a financial portfolio by providing stock price data yourself, e.g. by reading data from disk/file.
