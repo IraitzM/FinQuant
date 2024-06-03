@@ -5,7 +5,7 @@
 groups = ["default", "dev", "docs", "test"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.1"
-content_hash = "sha256:b22f6d3b5afd04ae93997c1a668ac70ead97b1c84c2d02f003f9fb59f9a43fcb"
+content_hash = "sha256:1257e74c1ebd472f399fd97814e04148773a371a38d3b52ee321e23b193479db"
 
 [[package]]
 name = "alabaster"
@@ -2451,6 +2451,17 @@ groups = ["dev"]
 files = [
     {file = "Send2Trash-1.8.3-py3-none-any.whl", hash = "sha256:0c31227e0bd08961c7665474a3d1ef7193929fedda4233843689baa056be46c9"},
     {file = "Send2Trash-1.8.3.tar.gz", hash = "sha256:b18e7a3966d99871aefeb00cfbcfdced55ce4871194810fc71f4aa484b953abf"},
+]
+
+[[package]]
+name = "setuptools"
+version = "70.0.0"
+requires_python = ">=3.8"
+summary = "Easily download, build, install, upgrade, and uninstall Python packages"
+groups = ["dev"]
+files = [
+    {file = "setuptools-70.0.0-py3-none-any.whl", hash = "sha256:54faa7f2e8d2d11bcd2c07bed282eef1046b5c080d1c32add737d7b5817b1ad4"},
+    {file = "setuptools-70.0.0.tar.gz", hash = "sha256:f211a66637b8fa059bb28183da127d4e86396c991a942b028c6650d4319c3fd0"},
 ]
 
 [[package]]

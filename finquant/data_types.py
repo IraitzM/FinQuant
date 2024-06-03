@@ -67,8 +67,8 @@ SERIES_OR_DATAFRAME = Union[pd.Series, pd.DataFrame]
 LIST_DICT_KEYS = Union[ARRAY_OR_LIST[ELEMENT_TYPE], KeysView[ELEMENT_TYPE]]
 
 # Numeric types
-FLOAT = Union[np.floating, float]
-INT = Union[np.integer, int]
+FLOAT = Union[np.float64, float]
+INT = Union[np.int64, int]
 NUMERIC = Union[INT, FLOAT]
 
 # String/Datetime types
