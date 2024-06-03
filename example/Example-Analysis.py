@@ -135,7 +135,7 @@ plt.show()
 
 # <codecell>
 
-pf.data.plot(secondary_y=["WIKI/MCD", "WIKI/DIS"], grid=True)
+pf.data.plot(secondary_y=["MCD", "DIS"], grid=True)
 plt.show()
 
 # <codecell>
@@ -172,10 +172,10 @@ plt.show()
 from finquant.moving_average import sma
 
 # simple moving average
-ax = pf.data.plot(secondary_y=["WIKI/MCD", "WIKI/DIS"], grid=True)
+ax = pf.data.plot(secondary_y=["MCD", "DIS"], grid=True)
 # computing simple moving average over a span of 50 (trading) days
 # and plotting it
-sma(pf.data, span=50).plot(ax=ax, secondary_y=["WIKI/MCD", "WIKI/DIS"], grid=True)
+sma(pf.data, span=50).plot(ax=ax, secondary_y=["MCD", "DIS"], grid=True)
 plt.show()
 
 # <codecell>
@@ -183,9 +183,9 @@ plt.show()
 from finquant.moving_average import ema
 
 # exponential moving average
-ax = pf.data.plot(secondary_y=["WIKI/MCD", "WIKI/DIS"], grid=True)
+ax = pf.data.plot(secondary_y=["MCD", "DIS"], grid=True)
 # computing exponential moving average and plotting it
-ema(pf.data).plot(ax=ax, secondary_y=["WIKI/MCD", "WIKI/DIS"])
+ema(pf.data).plot(ax=ax, secondary_y=["MCD", "DIS"])
 plt.show()
 
 # <markdowncell>
@@ -203,7 +203,7 @@ print(compute_ma.__doc__)
 # <codecell>
 
 # get stock data for disney
-dis = pf.get_stock("WIKI/DIS").data.copy(deep=True)
+dis = pf.get_stock("DIS").data.copy(deep=True)
 # we want moving averages of 10, 50, 100, and 200 days.
 spans = [10, 50, 100, 150, 200]
 # compute and plot moving averages
@@ -221,7 +221,7 @@ plt.show()
 from finquant.moving_average import plot_bollinger_band
 
 # get stock data for disney
-dis = pf.get_stock("WIKI/DIS").data.copy(deep=True)
+dis = pf.get_stock("DIS").data.copy(deep=True)
 span = 20
 # for simple moving average:
 plot_bollinger_band(dis, sma, span)
@@ -270,7 +270,7 @@ pf.properties()
 # <codecell>
 
 # getting Stock object from portfolio, for Google's stock
-goog = pf.get_stock("WIKI/GOOG")
+goog = pf.get_stock("GOOG")
 # getting the stock prices
 goog_prices = goog.data
 print(goog_prices.head(3))

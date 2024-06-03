@@ -6,7 +6,7 @@ test:rempltshow
 rempltshow:plt_agg_backend
 	@-sed -i 's/plt.show()//g' test_Example*.py
 
-plt_agg_backend:set_api_key_example
+plt_agg_backend:
 	@-sed -i '/^import matplotlib\.pyplot as plt$$/a \plt.switch_backend("Agg")' test_Example*.py
 
 clean:

@@ -19,8 +19,8 @@ strong_abse = 1e-15
 weak_abse = 1e-8
 
 # read data from file
-df_pf_path = pathlib.Path.cwd() / "data" / "ex1-portfolio.csv"
-df_data_path = pathlib.Path.cwd() / "data" / "ex1-stockdata.csv"
+df_pf_path = pathlib.Path.cwd() / ".." / "data" / "ex1-portfolio.csv"
+df_data_path = pathlib.Path.cwd() / ".." / "data" / "ex1-stockdata.csv"
 df_pf = pd.read_csv(df_pf_path)
 df_data = pd.read_csv(df_data_path, index_col="Date", parse_dates=True)
 # create testing variables
