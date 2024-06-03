@@ -3,7 +3,6 @@ portfolios, e.g. a weighted average, which is the expected value/return, a
 weighted standard deviation (volatility), and the Sharpe ratio.
 """
 
-
 from typing import Optional, Tuple
 
 import numpy as np

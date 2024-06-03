@@ -1,3 +1,22 @@
+[project]
+name = "FinQuant"
+version = "0.7.0"
+description = "A program for financial portfolio management, analysis and optimisation"
+authors = [
+    {name = "Frank Milthaler", email = "f.milthaler@gmail.com"},
+]
+dependencies = [
+    "numpy>=1.22.0",
+    "scipy>=1.2.0",
+    "pandas>=2.2",
+    "matplotlib>=3.0",
+    "yfinance>=0.1.43",
+    "scikit-learn>=1.3.0",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+license = {text = "MIT"}
+
 [tool.black]
 line-length = 88
 
@@ -17,3 +36,29 @@ ignore_missing_imports = true
 warn_unused_configs = true
 warn_unused_ignores = true
 plugins=["pydantic.mypy","numpy.typing.mypy_plugin"]
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "black>=24.4.2",
+    "mypy>=1.10.0",
+    "isort>=5.13.2",
+    "jupyter>=1.0.0",
+    "notebook>=7.2.0",
+]
+docs = [
+    "sphinx==6.2.1",
+    "sphinx-rtd-theme==1.2.0",
+    "sphinx-autodoc-typehints>=1.23.0",
+]
+test = [
+    "pytest>=8.2.1",
+    "pylint>=3.2.2",
+    "pydantic>=2.7.2",
+]
+
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"

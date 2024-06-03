@@ -2,7 +2,6 @@
 optimise a portfolio by minimising a cost/objective function.
 """
 
-
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 import matplotlib.pylab as plt

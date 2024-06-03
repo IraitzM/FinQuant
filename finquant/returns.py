@@ -1,6 +1,5 @@
 """The module provides functions to compute different kinds of returns of stocks."""
 
-
 from typing import Any
 
 import numpy as np
@@ -47,7 +46,7 @@ def daily_returns(data: pd.DataFrame) -> pd.DataFrame:
     # Type validations:
     type_validation(data=data)
     return (
-        data.pct_change()
+        data.pct_change(fill_method=None)
         .dropna(how="all")
         .replace([np.inf, -np.inf], np.nan)
         .astype(np.float64)

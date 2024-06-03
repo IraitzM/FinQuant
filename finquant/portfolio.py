@@ -6,7 +6,7 @@
   ``finquant.asset``).
 - a public function ``build_portfolio()`` that automatically constructs and returns
   an instance of ``Portfolio`` and instances of ``Stock``. 
-  The relevant stock data is either retrieved through `quandl`/`yfinance` or provided by the user as a
+  The relevant stock data is either retrieved through `yfinance` or provided by the user as a
   ``pandas.DataFrame`` (after loading it manually from disk/reading from file).
   For an example on how to use it, please read the corresponding docstring,
   or have a look at the examples in the sub-directory ``example``.
@@ -54,6 +54,7 @@ Finally, functions are implemented to generate the following plots:
   based on a numerical optimisation
 - Individual stocks of the portfolio (Expected Return over Volatility)
 """
+
 # supress some pylint complaints for this module only
 # pylint: disable=C0302,R0904,,R0912,W0212
 
@@ -74,12 +75,7 @@ from finquant.data_types import (
     STRING_OR_DATETIME,
 )
 from finquant.efficient_frontier import EfficientFrontier
-from finquant.exceptions import (
-    InvalidDateFormatError,
-    QuandlError,
-    QuandlLimitError,
-    YFinanceError,
-)
+from finquant.exceptions import InvalidDateFormatError, YFinanceError
 from finquant.market import Market
 from finquant.monte_carlo import MonteCarloOpt
 from finquant.quants import (
@@ -770,7 +766,7 @@ class Portfolio:
         for idx, txt in enumerate(stock_returns.index):
             plt.annotate(
                 txt,
-                (stock_volatility[idx], stock_returns[idx]),
+                (stock_volatility.iloc[idx], stock_returns.iloc[idx]),
                 xytext=(10, 0),
                 textcoords="offset points",
                 label=idx,
@@ -834,74 +830,6 @@ class Portfolio:
         return "Contains information about a portfolio."
 
 
-def _correct_quandl_request_stock_name(
-    names: Union[str, ARRAY_OR_LIST[str]]
-) -> List[str]:
-    """If given input argument is of type string,
-    this function converts it to a list, assuming the input argument
-    is only one stock name.
-    """
-    # Type validations:
-    type_validation(names=names)
-    # make sure names is a list of names:
-    names_list: List[str]
-    if isinstance(names, str):
-        names_list = list(names)
-    elif isinstance(names, np.ndarray):
-        names_list = names.tolist()
-    else:
-        names_list = names
-    return names_list
-
-
-def _quandl_request(
-    names: List[str],
-    start_date: Optional[STRING_OR_DATETIME] = None,
-    end_date: Optional[STRING_OR_DATETIME] = None,
-) -> pd.DataFrame:
-    """This function performs a simple request from `quandl` and returns
-    a DataFrame containing stock data.
-
-    :param names: List of strings of stock names to be requested
-    :param start_date: String/datetime of the start date of relevant stock data.
-    :param end_date: String/datetime of the end date of relevant stock data.
-    """
-    try:
-        import quandl  # pylint: disable=C0415
-    except ImportError:
-        print(
-            "The following package is required:\n - `quandl`\n"
-            + "Please make sure that it is installed."
-        )
-    # Type validations:
-    type_validation(names=names, start_date=start_date, end_date=end_date)
-
-    # get correct stock names that quandl.get can request,
-    # e.g. "WIKI/GOOG" for Google
-    reqnames: List[str] = _correct_quandl_request_stock_name(names)
-    try:
-        resp: pd.DataFrame = quandl.get(
-            reqnames, start_date=start_date, end_date=end_date
-        )
-    except quandl.LimitExceededError as exc:
-        errormsg = (
-            "You exceeded Quandl's limit. Are you using your API key?\nQuandl Error: "
-            + str(exc)
-        )
-        raise QuandlLimitError(errormsg) from exc
-    except Exception as exc:
-        errormsg = (
-            "An error occurred while retrieving data from Quandl.\n"
-            + "Make sure all the requested stock names/tickers are "
-            + "supported by Quandl.\n"
-            + "Quandl error: "
-            + str(exc)
-        )
-        raise QuandlError(errormsg) from exc
-
-    return resp
-
-
 def _yfinance_request(
     names: List[str],
     start_date: Optional[STRING_OR_DATETIME] = None,
@@ -925,7 +853,6 @@ def _yfinance_request(
     type_validation(names=names, start_date=start_date, end_date=end_date)
 
     # yfinance does not exit safely if start/end date were not given correctly:
-    # this step is not required for quandl as it handles this exception properly
     try:
         if isinstance(start_date, str):
             start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d")
@@ -937,7 +864,7 @@ def _yfinance_request(
             "(either as datetime object or as String in the format '%Y-%m-%d')."
         ) from exc
 
-    # unlike quandl, yfinance does not have a prefix in front of the ticker
+    # yfinance does not have a prefix in front of the ticker
     # thus we do not need to correct them
     try:
         resp: pd.DataFrame = yfinance.download(names, start=start_date, end=end_date)
@@ -961,6 +888,26 @@ def _get_quandl_data_column_label(stock_name: str, data_label: str) -> str:
     ``pandas.DataFrame`` returned by `quandl`.
     """
     return stock_name + " - " + data_label
+
+
+def _correct_quandl_request_stock_name(
+    names: Union[str, ARRAY_OR_LIST[str]]
+) -> List[str]:
+    """If given input argument is of type string,
+    this function converts it to a list, assuming the input argument
+    is only one stock name.
+    """
+    # Type validations:
+    type_validation(names=names)
+    # make sure names is a list of names:
+    names_list: List[str]
+    if isinstance(names, str):
+        names_list = list(names)
+    elif isinstance(names, np.ndarray):
+        names_list = names.tolist()
+    else:
+        names_list = names
+    return names_list
 
 
 def _get_stocks_data_columns(
@@ -1005,7 +952,7 @@ def _get_stocks_data_columns(
                 # alter col for yfinance, as it returns column labels without '.'
                 col = col.replace(".", "")
                 if col in data.columns:
-                    if not col in firstlevel_colnames:
+                    if col not in firstlevel_colnames:
                         firstlevel_colnames.append(col)
                     if name in data[col].columns:
                         colname = name
@@ -1045,7 +992,7 @@ def _build_portfolio_from_api(
     pf_allocation: Optional[pd.DataFrame] = None,
     start_date: Optional[STRING_OR_DATETIME] = None,
     end_date: Optional[STRING_OR_DATETIME] = None,
-    data_api: str = "quandl",
+    data_api: str = "yfinance",
     market_index: Optional[str] = None,
 ) -> Portfolio:
     """Returns a portfolio based on input in form of a list of strings/names
@@ -1057,9 +1004,8 @@ def _build_portfolio_from_api(
 
     :param start_date: (optional) String/datetime of the start date of relevant stock data.
     :param end_date: (optional) String/datetime of the end date of relevant stock data.
-    :param data_api: (optional, default: 'quandl') A string which determines what API to use to obtain stock prices,
+    :param data_api: (optional, default: 'yfinance') A string which determines what API to use to obtain stock prices,
         if data is not provided by the user. Valid values:
-         - ``quandl`` (Python package/API to `Quandl`)
          - ``yfinance`` (Python package formerly known as ``fix-yahoo-finance``)
     :param market_index: (optional, default: ``None``) A string which determines the market index
         to be used for the computation of the Trenor Ratio, beta parameter and the R squared of the portfolio.
@@ -1085,15 +1031,10 @@ def _build_portfolio_from_api(
         stock_data = _yfinance_request(list(names), start_date, end_date)
         if market_index is not None:
             market_data = _yfinance_request([market_index], start_date, end_date)
-    elif data_api == "quandl":
-        stock_data = _quandl_request(list(names), start_date, end_date)
-        if market_index is not None:
-            # only generated if user explicitly requests market index with quandl
-            raise Warning("Market index is not supported for quandl data.")
     else:
         raise ValueError(
             f"Error: value of data_api '{data_api}' is not supported. "
-            + "Choose between 'yfinance' and 'quandl'."
+            + "Choose 'yfinance' instead"
         )
     # check pf_allocation:
     if pf_allocation is None:
@@ -1278,15 +1219,14 @@ def build_portfolio(**kwargs: Dict[str, Any]) -> Portfolio:
     :param names: (optional) A List of strings, containing the names
          of the stocks, e.g. "GOOG" for Google.
     :param start_date: (optional) string/datetime start date of stock data to be
-         requested through `quandl`/`yfinance` (default: ``None``).
+         requested through `yfinance` (default: ``None``).
     :param end_date: (optional) string/datetime end date of stock data to be
-         requested through `quandl`/`yfinance` (default: ``None``).
+         requested through `yfinance` (default: ``None``).
     :param data: (optional) A DataFrame which contains quantities of
          the stocks listed in ``pf_allocation``.
-    :param data_api: (optional) A string (default: ``quandl``) which determines how to obtain
+    :param data_api: (optional) A string (default: ``yfinance``) which determines how to obtain
         stock prices, if data is not provided by the user. Valid values:
 
-         - ``quandl`` (Python package/API to `Quandl`)
          - ``yfinance`` (Python package formerly known as ``fix-yahoo-finance``)
 
     :param market_index: (optional) A string (default: ``None``) which determines the
@@ -1303,7 +1243,7 @@ def build_portfolio(**kwargs: Dict[str, Any]) -> Portfolio:
 
      The two different ways this function can be used are useful for:
 
-     1. building a portfolio by pulling data from `quandl`/`yfinance`,
+     1. building a portfolio by pulling data from `yfinance`,
      2. building a portfolio by providing stock data which was obtained otherwise,
         e.g. from data files.
 
@@ -1379,7 +1319,7 @@ def build_portfolio(**kwargs: Dict[str, Any]) -> Portfolio:
         pf_allocation = kwargs.get("pf_allocation", None)
         start_date = cast(Optional[STRING_OR_DATETIME], kwargs.get("start_date", None))
         end_date = cast(Optional[STRING_OR_DATETIME], kwargs.get("end_date", None))
-        data_api = cast(str, kwargs.get("data_api", "quandl"))
+        data_api = cast(str, kwargs.get("data_api", "yfinance"))
         market_index = cast(Optional[str], kwargs.get("market_index", None))
 
         # get portfolio:

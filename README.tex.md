@@ -7,7 +7,7 @@
     <img src="https://img.shields.io/github/stars/fmilthaler/FinQuant.svg?style=social&label=Star" alt='pypi'>
   </a>
   <a href="https://pypi.org/project/FinQuant">
-    <img src="https://img.shields.io/badge/pypi-v0.7.0-brightgreen.svg?style=popout" alt='pypi'>
+    <img src="https://img.shields.io/badge/pypi-v0.7.1-brightgreen.svg?style=popout" alt='pypi'>
   </a>
   <a href="https://github.com/fmilthaler/FinQuant">
     <img src="https://github.com/fmilthaler/finquant/actions/workflows/pytest.yml/badge.svg?branch=master" alt='GitHub Actions'>
@@ -51,8 +51,9 @@ Within a few lines of code, *FinQuant* can generate an object that holds your st
 
 ### Automatically generating an instance of `Portfolio`
 `finquant.portfolio.build_portfolio` is a function that eases the creating of your portfolio. See below for one of several ways of using `build_portfolio`.
-```
+```py
 from finquant.portfolio import build_portfolio
+
 names = ['GOOG', 'AMZN', 'MCD', 'DIS']
 start_date = '2015-01-01'
 end_date = '2017-12-31'
@@ -61,7 +62,8 @@ pf = build_portfolio(names=names,
                     end_date=end_date)
 ```
 `pf` is an instance of `finquant.portfolio.Portfolio`, which contains the prices of the stocks in your portfolio. Then...
-```
+
+```py
 pf.data.head(3)
 ```
 yields
@@ -75,7 +77,7 @@ Date
 
 ### Portfolio properties
 Nicely printing out the portfolio's properties
-```
+```py
 pf.properties()
 ```
 Depending on the stocks within your portfolio, the output looks something like the below.
@@ -106,7 +108,7 @@ Information:
 ```
 
 ### Cumulative Return
-```
+```py
 pf.comp_cumulative_returns().plot().axhline(y = 0, color = "black", lw = 3)
 ```
 yields
@@ -115,8 +117,9 @@ yields
 </p>
 
 ### Band Moving Average (Buy/Sell Signals)
-```
+```py
 from finquant.moving_average import compute_ma, ema
+
 # get stock data for disney
 dis = pf.get_stock("DIS").data.copy(deep=True)
 spans = [10, 50, 100, 150, 200]
@@ -128,8 +131,9 @@ yields
 </p>
 
 ### Bollinger Band
-```
+```py
 from finquant.moving_average import plot_bollinger_band, sma
+
 # get stock data for disney
 dis = pf.get_stock("DIS").data.copy(deep=True)
 span=20
@@ -141,7 +145,7 @@ yields
 </p>
 
 ### Portfolio Optimisation
-```
+```py
 # performs and plots results of Monte Carlo run (5000 iterations)
 opt_w, opt_res = pf.mc_optimisation(num_trials=5000)
 # plots the results of the Monte Carlo optimisation
@@ -166,7 +170,6 @@ As it is common for open-source projects, there are several ways to get hold of 
  - numpy>=1.15
  - pandas>=2.0
  - matplotlib>=3.0
- - quandl>=3.4.5
  - yfinance>=0.1.43
  - scipy>=1.2.0
  - scikit-learn>=1.3.0
@@ -241,7 +244,7 @@ look at the examples provided in `./example`.
 **Note**: In the below examples, `pf` refers to an instance of `finquant.portfolio.Portfolio`, the object that holds all stock prices and computes its most common quantities automatically. To make *FinQuant* a user-friendly program, that combines data analysis, visualisation and optimisation, the object also provides interfaces to the main features that are provided in the modules in `./finquant/` and are discussed throughout this README.
 
 ### Building a portfolio with data from web
-`./example/Example-Build-Portfolio-from-web.py`: Shows how to use *FinQuant* to build a financial portfolio by downloading stock price data through the Python package `quandl`/`yfinance`.
+`./example/Example-Build-Portfolio-from-web.py`: Shows how to use *FinQuant* to build a financial portfolio by downloading stock price data through the Python package `yfinance`.
 
 ### Building a portfolio with preset data
 `./example/Example-Build-Portfolio-from-file.py`: Shows how to use *FinQuant* to build a financial portfolio by providing stock price data yourself, e.g. by reading data from disk/file.
