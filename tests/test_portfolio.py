@@ -10,12 +10,11 @@ import matplotlib.pylab as plt
 import numpy as np
 import pandas as pd
 import pytest
+from numpy.testing import assert_array_almost_equal
 
 from finquant.efficient_frontier import EfficientFrontier
 from finquant.portfolio import Portfolio, build_portfolio
 from finquant.stock import Stock
-
-from numpy.testing import assert_array_almost_equal
 
 # comparisons
 strong_dec = 15
@@ -270,7 +269,9 @@ def test_mc_optimisation():
 
     # tests
     assert_array_almost_equal(minvol_res_orig, opt_res.iloc[0].values, decimal=weak_dec)
-    assert_array_almost_equal(maxsharpe_res_orig, opt_res.iloc[1].values, decimal=weak_dec)
+    assert_array_almost_equal(
+        maxsharpe_res_orig, opt_res.iloc[1].values, decimal=weak_dec
+    )
     assert_array_almost_equal(minvol_w_orig, opt_w.iloc[0].values, decimal=weak_dec)
     assert_array_almost_equal(maxsharpe_w_orig, opt_w.iloc[1].values, decimal=weak_dec)
 
@@ -298,14 +299,7 @@ def test_get_ef():
 def test_ef_minimum_volatility():
     d = d_pass[4]
     pf = build_portfolio(**d)
-    min_vol_weights = np.array(
-        [
-            0.154985,
-            0.000000,
-            0.494722,
-            0.350293
-        ]
-    )
+    min_vol_weights = np.array([0.154985, 0.000000, 0.494722, 0.350293])
     ef_opt_weights = pf.ef_minimum_volatility()
     print(ef_opt_weights)
     assert np.allclose(
@@ -316,9 +310,7 @@ def test_ef_minimum_volatility():
 def test_maximum_sharpe_ratio():
     d = d_pass[4]
     pf = build_portfolio(**d)
-    max_sharpe_weights = np.array(
-        [0.000000, 0.412857, 0.587143, 0.000000]
-    )
+    max_sharpe_weights = np.array([0.000000, 0.412857, 0.587143, 0.000000])
     ef_opt_weights = pf.ef_maximum_sharpe_ratio()
     assert np.allclose(
         ef_opt_weights.values.transpose(), max_sharpe_weights, atol=weak_abse
@@ -328,9 +320,7 @@ def test_maximum_sharpe_ratio():
 def test_efficient_return():
     d = d_pass[4]
     pf = build_portfolio(**d)
-    efficient_return_weights = np.array(
-        [0.09357459, 0.16061942, 0.5627668 , 0.18303918]
-    )
+    efficient_return_weights = np.array([0.09357459, 0.16061942, 0.5627668, 0.18303918])
     ef_opt_weights = pf.ef_efficient_return(0.2542)
     assert np.allclose(
         ef_opt_weights.values.transpose(), efficient_return_weights, atol=weak_abse
@@ -354,17 +344,17 @@ def test_efficient_frontier():
     pf = build_portfolio(**d)
     efrontier = np.array(
         [
-            [0.13310746, 0.2       ],
-            [0.13384227, 0.21      ],
-            [0.13493506, 0.22      ],
-            [0.13637485, 0.23      ],
-            [0.13815492, 0.24      ],
-            [0.1402605 , 0.25      ],
-            [0.14267721, 0.26      ],
-            [0.14538944, 0.27      ],
-            [0.14838102, 0.28      ],
-            [0.15163545, 0.29      ],
-            [0.15513629, 0.3       ]
+            [0.13310746, 0.2],
+            [0.13384227, 0.21],
+            [0.13493506, 0.22],
+            [0.13637485, 0.23],
+            [0.13815492, 0.24],
+            [0.1402605, 0.25],
+            [0.14267721, 0.26],
+            [0.14538944, 0.27],
+            [0.14838102, 0.28],
+            [0.15163545, 0.29],
+            [0.15513629, 0.3],
         ]
     )
     targets = [round(0.2 + 0.01 * i, 2) for i in range(11)]

@@ -54,6 +54,7 @@ Finally, functions are implemented to generate the following plots:
   based on a numerical optimisation
 - Individual stocks of the portfolio (Expected Return over Volatility)
 """
+
 # supress some pylint complaints for this module only
 # pylint: disable=C0302,R0904,,R0912,W0212
 
@@ -74,10 +75,7 @@ from finquant.data_types import (
     STRING_OR_DATETIME,
 )
 from finquant.efficient_frontier import EfficientFrontier
-from finquant.exceptions import (
-    InvalidDateFormatError,
-    YFinanceError,
-)
+from finquant.exceptions import InvalidDateFormatError, YFinanceError
 from finquant.market import Market
 from finquant.monte_carlo import MonteCarloOpt
 from finquant.quants import (
@@ -831,6 +829,7 @@ class Portfolio:
         # print short description
         return "Contains information about a portfolio."
 
+
 def _yfinance_request(
     names: List[str],
     start_date: Optional[STRING_OR_DATETIME] = None,
@@ -882,12 +881,14 @@ def _yfinance_request(
         raise YFinanceError(errormsg) from exc
     return resp
 
+
 def _get_quandl_data_column_label(stock_name: str, data_label: str) -> str:
     """Given stock name and label of a data column, this function returns
     the string "<stock_name> - <data_label>" as it can be found in a
     ``pandas.DataFrame`` returned by `quandl`.
     """
     return stock_name + " - " + data_label
+
 
 def _correct_quandl_request_stock_name(
     names: Union[str, ARRAY_OR_LIST[str]]
@@ -907,6 +908,7 @@ def _correct_quandl_request_stock_name(
     else:
         names_list = names
     return names_list
+
 
 def _get_stocks_data_columns(
     data: pd.DataFrame, names: ARRAY_OR_LIST[str], cols: List[str]
@@ -983,6 +985,7 @@ def _get_stocks_data_columns(
             newcolnames.update({_get_quandl_data_column_label(name, cols[0]): name})
         data.rename(columns=newcolnames, inplace=True)
     return data
+
 
 def _build_portfolio_from_api(
     names: ARRAY_OR_LIST[str],

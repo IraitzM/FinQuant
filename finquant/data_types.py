@@ -44,6 +44,7 @@ Usage Example
         return 5.0
 
 """
+
 # pylint: disable=C0103
 
 

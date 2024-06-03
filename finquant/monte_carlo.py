@@ -3,7 +3,6 @@ Monte Carlo method and a class ``MonteCarloOpt`` which allows the user to perfor
 Monte Carlo run to find optimised financial portfolios, given an initial portfolio.
 """
 
-
 from typing import Any, Callable, Dict, Optional, Tuple
 
 import matplotlib.pylab as plt

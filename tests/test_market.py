@@ -2,10 +2,12 @@
 # tests for Market #
 ###################
 import unittest
+
 import pandas as pd
 
 from finquant.market import Market
 from finquant.portfolio import build_portfolio
+
 
 class TestMarket(unittest.TestCase):
     """
@@ -27,7 +29,6 @@ class TestMarket(unittest.TestCase):
         # dates can be set as datetime or string, as shown below:
         self.start_date = "2018-01-01"
         self.end_date = "2023-01-01"
-
 
     def test_market(self):
         """

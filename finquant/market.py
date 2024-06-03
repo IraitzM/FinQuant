@@ -12,7 +12,6 @@ and attributes specific to market indices.
 
 """
 
-
 import pandas as pd
 
 from finquant.asset import Asset

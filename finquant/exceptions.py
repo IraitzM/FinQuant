@@ -43,6 +43,7 @@ class InvalidDateFormatError(Exception):
             raise InvalidDateFormatError("Invalid date format. Use 'YYYY-MM-DD'.") from exc
     """
 
+
 class YFinanceError(Exception):
     """
     Exception for YFinance Data Retrieval Error

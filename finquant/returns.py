@@ -1,6 +1,5 @@
 """The module provides functions to compute different kinds of returns of stocks."""
 
-
 from typing import Any
 
 import numpy as np
