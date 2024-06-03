@@ -40,3 +40,5 @@ FinQuant.egg-info/*
 # other #
 #########
 .idea
+.pdm-python
+dist/*
